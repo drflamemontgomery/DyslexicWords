@@ -1,5 +1,4 @@
 import feathers.controls.Application;
-import feathers.controls.TextArea;
 
 class DyslexicHaxe extends Application {
 
@@ -11,6 +10,8 @@ class DyslexicHaxe extends Application {
     
     Fonts.init();
 
+    // Only for testing the Text Editor
+    // Will be replaced with navigation
 		addChild(new TextEditor());
 	}
 }
