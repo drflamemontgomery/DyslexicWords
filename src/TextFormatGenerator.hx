@@ -1,8 +1,6 @@
 package;
 
 import openfl.text.TextFormat;
-import openfl.Assets;
-import openfl.text.Font;
 
 // A helper class for generating text formats
 class TextFormatGenerator {
