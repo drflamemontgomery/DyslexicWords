@@ -3,8 +3,8 @@ package;
 import openfl.text.Font;
 import openfl.text.FontStyle;
 
+// A helper class for generating font types from multiple files
 class Fonts {
-  
 
   static private var initialized = false;
   public static function init() {
