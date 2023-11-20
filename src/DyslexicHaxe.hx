@@ -1,3 +1,5 @@
+package;
+
 import feathers.controls.Application;
 
 class DyslexicHaxe extends Application {

@@ -1,9 +1,11 @@
-import openfl.events.Event;
+package;
 
 import feathers.controls.TextArea;
 import feathers.core.ValidatingSprite;
+
 import openfl.text.TextFormat;
 import openfl.text.TextField;
+import openfl.events.Event;
 
 // A wrapper class for the TextArea to implement
 // changing fonts for individual words
