@@ -4,8 +4,13 @@ import openfl.text.TextFormat;
 import openfl.Assets;
 import openfl.text.Font;
 
+// A helper class for generating text formats
 class TextFormatGenerator {
  
+  //==================================================--
+  // Static Fields
+  //==================================================--
+
   public static var fonts : Array<String> = [];
   private static var initialized : Bool = false;
 
@@ -18,31 +23,19 @@ class TextFormatGenerator {
       "SpaceGrotesk",
       "PTSerif",
       "DancingScript",
-      /*Assets.getFont("fonts/Oswald-Regular.ttf").fontName,
-      Assets.getFont("fonts/SpaceGrotesk-Regular.ttf").fontName,
-      Assets.getFont("fonts/PTSerif-Regular.ttf").fontName,
-      Assets.getFont("fonts/DancingScript-Regular.ttf").fontName,*/
     ];
   }
 
-  private var size : Null<Int>;
+  //==================================================--
+  // Instance Fields
+  //==================================================--
+
+  private var _size : Null<Int>;
 
   public function new(?size:Int) {
     init();
 
-    this.size = size;
-  }
-
-  private function randomFont() {
-    return fonts[Random.int(0, fonts.length-1)];
-  }
-
-  private function randomSize() {
-    return size + Random.int(0, 8) - 4;
-  }
-
-  inline function abs(a:Int) {
-    return a < 0 ? -a : a;
+    this._size = size;
   }
 
   public function generateFormats(num:Int) :Array<TextFormat> {
@@ -52,32 +45,58 @@ class TextFormatGenerator {
    
     var bold = false; 
     for(i in 0...num) {
-      var format = new TextFormat(randomFont(), randomSize(), null, bold);
+      
+      var format = generateContrastingFormat(lastFormat, bold);
       bold = !bold;
-
-      while(format.font == lastFormat.font) {
-        format.font = randomFont();
-      }
-      while(abs(format.size - lastFormat.size) < 2) {
-        format.size = randomSize();
-      }
-
       formats.push(format);
       lastFormat = format;
     }
     
-    var firstFormat = formats[0];
-    var prevFormat = formats[formats.length-2];
-    while(lastFormat.font == firstFormat.font ||
-        lastFormat.font == prevFormat.font) {
-      lastFormat.font = randomFont();
-    }
-    while(abs(lastFormat.size - firstFormat.size) < 2 &&
-        abs(lastFormat.size - prevFormat.size) < 2) {
-      lastFormat.size = randomSize();
-    }
-    
+    makeFormatContrast(lastFormat, formats[0], formats[formats.length-2]); 
     return formats;
   }
-  
+
+  //==================================================--
+  // Random Generatiion Functions
+  //==================================================--
+
+  // Ensure that the last format contrasts with the previous and the next format
+  private function makeFormatContrast(targetFormat:TextFormat, format1:TextFormat, format2:TextFormat):Void {
+    while(targetFormat.font == format1.font ||
+        targetFormat.font == format2.font) {
+      targetFormat.font = randomFont();
+    }
+
+    while(abs(targetFormat.size - format1.size) < 2 &&
+        abs(targetFormat.size - format2.size) < 2) {
+      targetFormat.size = randomSize();
+    }
+  }
+
+  // Generate a Format that is distinguishable from neighbouring Formats
+  private function generateContrastingFormat(lastFormat:TextFormat, bold:Bool) :TextFormat {
+    var format = new TextFormat(randomFont(), randomSize(), null, bold);
+
+    while(format.font == lastFormat.font) {
+      format.font = randomFont();
+    }
+    while(abs(format.size - lastFormat.size) < 2) {
+      format.size = randomSize();
+    }
+
+    return format;
+  }
+
+  private function randomFont() {
+    return fonts[Random.int(0, fonts.length-1)];
+  }
+
+  private function randomSize() {
+    return _size + Random.int(0, 8) - 4;
+  }
+
+  inline function abs(a:Int) {
+    return a < 0 ? -a : a;
+  }
+
 }
