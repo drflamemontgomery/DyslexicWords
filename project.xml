@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+	<meta title="DyslexicHaxe" package="com.example.DyslexicHaxe" version="1.0.0" company="My Company"/>
+	<app main="DyslexicHaxe"/>
+	
+	<window allow-high-dpi="true"/>
+	<window fps="60"/>
+	<window fps="0" if="html5"/>
+	
+  <source path="src"/>
+	
+	<haxelib name="openfl"/>
+	<haxelib name="actuate"/>
+  <haxelib name="feathersui"/>
+  <haxelib name="random"/>
+
+  <icon path="assets/icons/icon.svg"/>
+  <assets path="assets/fonts" rename="fonts" include="*.ttf"/>
+  <assets path="assets/css" rename="css" include="*.css"/>
+</project>
