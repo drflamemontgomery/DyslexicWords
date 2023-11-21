@@ -14,6 +14,10 @@ class DyslexicHaxe extends Application {
 
     // Only for testing the Text Editor
     // Will be replaced with navigation
-		addChild(new TextEditor());
+		// addChild(new TextEditor());
+
+    // Only for testing the HomeView
+    // Will be replaced with navigation
+    addChild(new HomeView());
 	}
 }
