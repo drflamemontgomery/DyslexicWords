@@ -11,7 +11,6 @@ class ComponentBuilder {
   // A macro function that adds easy functions for compile time
   // adding children 
   public static macro function withChildren(object:Expr, children:Expr ):Expr {
-    var tempFunc = genTempVar();
     var tempVar = genTempVar();
 
     var expressions : Array<Expr> = [];
@@ -25,12 +24,9 @@ class ComponentBuilder {
     }
 
     return macro {
-      var $tempFunc = function() {
-        var $tempVar = $object;
-        $b{expressions};
-        return $p{[tempVar]};
-      };
-      $p{[tempFunc]}();
+      var $tempVar = $object;
+      $b{expressions};
+      $p{[tempVar]};
     };
   }
 
@@ -45,14 +41,11 @@ class ComponentBuilder {
         $p{[varName,fieldName]} = $fieldExpr;
       });
     }
-    var funcName = genTempVar();
+
     return macro {
-      var $funcName = function() {
-        var $varName = $expr;
-        $b{expressions}
-        return $p{[varName]}; 
-      };
-      $p{[funcName]}();
+      var $varName = $expr;
+      $b{expressions}
+      $p{[varName]}; 
     };
   }
 
