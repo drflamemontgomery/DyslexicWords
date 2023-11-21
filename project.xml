@@ -14,6 +14,8 @@
   <haxelib name="feathersui"/>
   <haxelib name="random"/>
 
+  <haxedef name="dump=pretty" if="debug"/>
+
   <icon path="assets/icons/icon.svg"/>
   <assets path="assets/fonts" rename="fonts" include="*.ttf"/>
   <assets path="assets/css" rename="css" include="*.css"/>
