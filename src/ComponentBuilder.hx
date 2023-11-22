@@ -67,4 +67,49 @@ class ComponentBuilder {
               Context.error('fields are of invalid type \'$type\'', Context.currentPos());
           });
   }
+
+  // Convert Call Expressions to Fields
+  private static function _callExprToField(tempVar:String, expr:Expr) :Expr {
+    switch(expr.expr) {
+      case EConst(c):
+        switch(c) {
+          case CIdent(id):
+           return {
+             pos: Context.currentPos(),
+             expr: EField(macro $p{[tempVar]}, id)
+           };
+          case c:
+           throw 'invalid constant $c';
+        }
+      case c:
+        throw 'invalid call expressions $c';
+    } 
+  }
+
+  // Convert expressions for apply functions
+  private static function _funcExprToCall(tempVar:String, fn:Expr) :Expr {
+    switch(fn.expr) {
+      case ECall(c, params):
+        return {
+          pos : Context.currentPos(),
+          expr : ECall(_callExprToField(tempVar, c), params)
+        }
+      case c:
+        throw '$c needs to be a constant expression';
+    }
+  }
+
+  // Allows you to apply functions to expressions at compile time
+  public static macro function apply(expr:Expr, funcs:Array<Expr>) :Expr {
+    var tempVar = genTempVar();
+    var expressions = [];
+    for(fn in funcs) {
+      expressions.push(_funcExprToCall(tempVar, fn));
+    }
+    return macro {
+      var $tempVar = $expr;
+      $b{expressions};
+      $p{[tempVar]};
+    };
+  }
 }
