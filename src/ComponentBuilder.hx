@@ -17,7 +17,6 @@ class ComponentBuilder {
     switch(children.expr) {
       case EArrayDecl(values):
         for(value in values) {
-          trace(macro { $value; });
           expressions.push(macro { $p{[tempVar]}.addChild($value); });
         }
       default:
