@@ -5,9 +5,16 @@ import feathers.controls.LayoutGroup;
 import feathers.controls.Label;
 import feathers.controls.Button;
 import feathers.controls.Drawer;
+import feathers.controls.Header;
 import feathers.layout.AnchorLayout;
 import feathers.layout.AnchorLayoutData;
+import feathers.layout.VerticalLayout;
+import feathers.layout.VerticalListFixedRowLayout;
+import feathers.skins.RectangleSkin;
+import feathers.graphics.FillStyle;
 import feathers.events.TriggerEvent;
+
+import openfl.display.DisplayObject;
 
 using ComponentBuilder;
 
@@ -20,26 +27,55 @@ class HomeView extends Panel {
     super();
     autoSizeMode = STAGE;
     
-    _container = new Drawer();
-    _container.drawer = new LayoutGroup();
-    addChild(_container);
-    header = createHomeHeader(); 
+    addChild(_container = _createHomeDrawer());
+    header = _createHomeHeader(); 
   }
 
-  private function createHomeHeader() : LayoutGroup {
-    return new LayoutGroup().withFields({
-      variant : LayoutGroup.VARIANT_TOOL_BAR,
-      layout : new AnchorLayout()
-    }).withChildren([
-      new Button("File", ).apply(addEventListener(
+  private inline function _createHomeHeader() : Header {
+    return new Header().withFields({
+      text : "Home",
+      leftView : new Button().withFields({
+        icon : Icons.threeBarMenu(24, 0x2e2e2e)
+      }).apply(
+        setPadding(6),
+        addEventListener(
           TriggerEvent.TRIGGER, (event) -> {
-            _container.opened = true;
+            _container.opened = !_container.opened;
           })
-        ),
-      new Label("Home").withFields({
-        layoutData: AnchorLayoutData.center()
-      })
+        )
+    });
+  }
+
+  private inline function _createHomeDrawer() : Drawer {
+    return new Drawer().withFields({
+      content : new LayoutGroup().withFields({
+        layout : new VerticalLayout().withFields({
+          horizontalAlign : CENTER,
+          verticalAlign : MIDDLE,
+        })
+      }),
+      drawer : _createDrawerContent(),
+    });
+  }
+
+  private inline function _createDrawerContent() : LayoutGroup {
+    return new LayoutGroup().withFields({
+      layout : new VerticalListFixedRowLayout().withFields({
+        paddingTop: 6.0,
+        paddingBottom: 6.0,
+        paddingLeft: 20.0,
+        paddingRight: 20.0,
+
+        gap: 12.0,
+      }),
+      backgroundSkin: new RectangleSkin(FillStyle.SolidColor(0xffffff)),
+    }).withChildren([
+      new Button("I am TEXT!!!"),
+      new Button("I am also TEXT!!!"),
     ]);
   }
 
+  private inline function _wrapDrawerItem(content:DisplayObject) : DisplayObject {
+    return content;
+  }
 }
